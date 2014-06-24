@@ -1,46 +1,61 @@
 import copy
+import collections
 import numpy as np
 import matplotlib.pylab as plt
 from functions import mad, quantiles, curr_pos
 
+Data_timeseries = collections.namedtuple('Data_timeseries', 'Data Timestamps')
 
-class read_data:
+
+class read_data(object):
     """ Fundamental methods for read, normalize and plot raw data """
-    def __init__(self, Input, freq):
+
+    def __init__(self, input_path, sampling_freq):
         """ Reads the raw data and returns the data, the data length and a
         timestamp array.
 
-        **Parameters**
+        Args:
+            Input (list of str) : Contains the full path of the input data file
+                                  locations.
 
-        Input : string
-            A list of strings contains the full path of the input data file
-            locations.
+            freq (double) : The sampling frequency of the original data.
 
-        freq : double
-            The sampling frequency of the original data in order to create
-            the proper timeseries.
+        Returns:
+            data_len (int) : The size of the input data.
+
+            data (list) : The input data.
+
+            timebase (int array) : Timestamps for facilitating plotting.
+
+            timeseries (list) : A super-list that contains the raw data and the
+                                timestamps.
+
+        Raises:
+
         """
+        self._set_inpath(input_path)
+        self._set_freq(sampling_freq)
+
         # Check the leght of all the input channels
         if not len(np.unique(map(len,
                              map(lambda n: np.fromfile(n, dtype=np.double),
-                                 Input)))):
+                                 self.inpath)))):
             print 'Data dimensions mismatch'
 
         # Data length
         self.data_len = np.unique(map(len, map(
                                   lambda n: np.fromfile(n, dtype=np.double),
-                                  Input)))[0]
+                                  self.inpath)))[0]
 
         # Loading the raw data from different files
         self.data = []
         for i, v in enumerate(map(lambda n: np.fromfile(n, dtype=np.double),
-                                  Input)):
+                                  self.inpath)):
             self.data.append(v)
 
-        # Create timestamps in order to facilitate plotting the data
-        self.timebase = np.arange(0, self.data_len)/freq
-        # Create a super-list containing the data and the timestamps
+        self.timebase = np.arange(0, self.data_len)/self.freq
         self.timeseries = copy.copy([self.data, list(self.timebase)])
+        Data_timeseries(self.data, self.timebase)
 
     def renormalization(self):
         """ Data renormalization (divise by mad) """
@@ -51,14 +66,18 @@ class read_data:
 
     def subseting(self, begin=0, end=1):
         """ Checks if a subset of the input data is continuous.
+        Args:
 
-            **Parameters**
+        Kwargs:
+            begin (int) : The first element of data points to be selected.
 
-            begin : int
-                The first element of data points to be selected
+            end (int) : The last element of data points.
 
-            end : int
-                The last element of data points
+        Returns:
+            A copy of a list that contains the data within the range
+            [begin,end].
+
+        Raises:
         """
         Dx = [np.sign(np.abs(np.diff(self.data[i][begin:end], 1))) for i in
               xrange(len(self.data))]
@@ -73,16 +92,19 @@ class read_data:
         """ Selects a subset of channels and checks all the necessary
             constraints.
 
-            **Parameters**
+        Args:
+            channels (int) : The number of channels to be selected.
 
-            channels : int
-                The number of channels to be selected
+        Kwargs:
+            begin (int) : The first element of data points to be selected.
 
-            begin : int
-                The first element of data points to be selected
+            end (int) : The last element of data points.
 
-            end : int
-                The last element of data points
+        Returns:
+            A list that contains data from a specified number of channels and
+            within a predefined range [begin, end].
+
+        Raises:
         """
         stop = len(self.data)
 
@@ -115,22 +137,23 @@ class read_data:
         """ Plots the data. Can interact with the user by supporting scrolling
             and selective printing of data segments.
 
-            **Parameters**
+        Args:
+            x (list) : A list of the input data
 
-            x : double
-                A list of the input data
+        Kwargs:
+            figsize (tuple of floats) : Size of the figure.
 
-            figsize : float
-                A tuple of the sizes of the figure
+            save (boolean) : Indicates if the figure will be saved.
 
-            save : boolean
-                Indicates if the figure will be saved
+            figname (str) : The name of the file in which the figure will be
+                            saved.
 
-            figname : string
-                The name of the saved figure
+            figtype (str) : The type of the file in which the figure will be
+                            saved (supports png and pdf).
 
-            figtype : string
-                The type of the saved figure (supports png and pdf)
+        Returns:
+
+        Raises:
         """
         x = np.asarray(x)
         step = 2000
@@ -180,3 +203,45 @@ class read_data:
                 plt.savefig(figname+'pdf', dpi=90)
             else:
                 plt.savefig(figname+'png')
+
+    """ Accessors """
+    def _set_inpath(self, input_path):
+        """ Accessor for input path.
+
+        Args:
+            input_path (list) : Full input paths where the input files are
+                                located.
+        Returns:
+            inpath (list) : Same as input_path but this is a class attribute.
+
+        Raises:
+            ValueError if the list contains no strings.
+        """
+        if all(isinstance(item, basestring) for item in input_path) is False:
+            raise ValueError('Input is not a string!')
+        self.inpath = input_path
+
+    def _set_freq(self, sampling_freq):
+        """ Accessor for sampling frequency.
+
+        Args:
+            sampling_freq (double) : Sampling frequency of the input raw data.
+
+        Returns:
+            freq (double) : Same as sampling_freq, but this is a class
+                            attribute.
+        Raises:
+            ValueError if the frequency is not a double/float.
+        """
+        if isinstance(sampling_freq, np.float) is False:
+            raise ValueError("freq is not a float!")
+        self.freq = sampling_freq
+
+    """ Properties """
+    input_path = property(_set_inpath,
+                          doc='The full path where input files are.'
+                          )
+
+    sampling_freq = property(_set_freq,
+                             doc="The sampling frequency of the input data."
+                             )
