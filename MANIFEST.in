@@ -1,0 +1,5 @@
+include setup.py
+include README.md
+include MANIFEST.in
+include examples/*.py
+recursive-include doc *
