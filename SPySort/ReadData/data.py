@@ -2,7 +2,8 @@ import copy
 import collections
 import numpy as np
 import matplotlib.pylab as plt
-from functions import mad, quantiles, curr_pos
+from SPySort.functions import mad, quantiles, curr_pos
+# from functions import mad, quantiles, curr_pos
 
 Data_timeseries = collections.namedtuple('Data_timeseries', 'Data Timestamps')
 
@@ -193,6 +194,9 @@ class read_data(object):
         ax.set_xlim([self.timebase[curr_pos:curr_pos+step].min(),
                      self.timebase[curr_pos:curr_pos+step].max()])
         ax.set_yticks([])
+        idx_ = ax.get_xticks([])
+        tmp_ = [str(i/10000.0) for i in idx_]
+        ax.set_xticklabels(tmp_)
         ax.spines['right'].set_visible(False)
         ax.spines['top'].set_visible(False)
         ax.spines['left'].set_visible(False)

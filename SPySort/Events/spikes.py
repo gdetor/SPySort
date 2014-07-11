@@ -1,7 +1,8 @@
 import copy
 import numpy as np
 import matplotlib.pylab as plt
-from functions import convolution, mad, curr_pos, cp
+# from functions import convolution, mad, curr_pos, cp
+from SPySort.functions import mad, convolution, curr_pos, cp
 
 
 class spike_detection():
@@ -83,7 +84,7 @@ class spike_detection():
         else:
             print 'You have to choose either the aggregate or the full mode'
 
-    def plot_filtered_data(self, x, y, thrs, figsize=(9, 5), save=False,
+    def plot_filtered_data(self, x, y, thrs, figsize=(9, 8), save=False,
                            figname='candidate_peaks', figtype='png'):
         """ Plots the raw data vs the filtered ones according to the rawData
             plot method.
@@ -156,6 +157,10 @@ class spike_detection():
         ax.set_xlim([self.timebase[curr_pos:curr_pos+step].min(),
                      self.timebase[curr_pos:curr_pos+step].max()])
         ax.set_yticks([])
+        idx_ = ax.get_xticks([])
+        tmp_ = [str(i/10000.0) for i in idx_]
+        ax.set_xticklabels(tmp_)
+
         ax.spines['right'].set_visible(False)
         ax.spines['top'].set_visible(False)
         ax.spines['left'].set_visible(False)
@@ -167,7 +172,7 @@ class spike_detection():
             else:
                 plt.savefig(figname+'png')
 
-    def plot_peaks(self, x, y, figsize=(9, 5), save=False, figname='peaks',
+    def plot_peaks(self, x, y, figsize=(9, 8), save=False, figname='peaks',
                    figtype='png'):
         """ Plots the filtered data (in black) and the detected peaks
             (in red).
@@ -231,6 +236,10 @@ class spike_detection():
             ax.plot(self.timebase[y[idx]], x[i, y[idx]] - B, 'ro')
             B += 15
         ax.set_xlabel('Time (s)')
+        idx_ = ax.get_xticks([])
+        tmp_ = [str(i/10000.0) for i in idx_]
+        ax.set_xticklabels(tmp_)
+
         ax.set_xlim([self.timebase[cp:cp+step].min(),
                      self.timebase[cp:cp+step].max()])
         ax.set_yticks([])

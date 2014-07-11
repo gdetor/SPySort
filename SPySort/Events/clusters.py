@@ -1,4 +1,4 @@
-from Events import events
+from SPySort.Events import events
 
 import numpy as np
 import pandas as pd
@@ -8,8 +8,8 @@ from sklearn.mixture import GMM
 from sklearn.cluster import KMeans
 from scipy.cluster.vq import kmeans
 from scipy.spatial.distance import pdist
-from functions import mad, good_evts_fct
 from pandas.tools.plotting import scatter_matrix
+from SPySort.functions import mad, good_evts_fct
 from scipy.cluster.hierarchy import linkage, fcluster, dendrogram
 
 
@@ -275,7 +275,7 @@ class pca_clustering(events.build_events):
         plt.axvspan(45, 89, fc='grey', alpha=.5, edgecolor='none')
         plt.axvspan(135, 179, fc='grey', alpha=.5, edgecolor='none')
 
-    def plot_clusters(self, clusters):
+    def plot_clusters(self, clusters, Size=(11, 8)):
         """ Plots events belong to five different clusters.
 
         **Parameters**
@@ -283,23 +283,30 @@ class pca_clustering(events.build_events):
         clusters : int (array or list)
             The index of the cluster from which the events will be plotted
         """
-        plt.subplot(511)
+        fig = plt.figure(figsize=Size)
+        fig.subplots_adjust(wspace=.3, hspace=.3)
+
+        ax = fig.add_subplot(511)
         self.plot_event(self.evts[self.goodEvts, :]
                         [np.array(clusters) == 0, :])
         plt.ylim([-15, 20])
-        plt.subplot(512)
+
+        ax = fig.add_subplot(512)
         self.plot_event(self.evts[self.goodEvts, :]
                         [np.array(clusters) == 1, :])
-        plt.ylim([-15, 20])
-        plt.subplot(513)
+        ax.set_ylim([-15, 20])
+
+        ax = fig.add_subplot(513)
         self.plot_event(self.evts[self.goodEvts, :]
                         [np.array(clusters) == 2, :])
-        plt.ylim([-15, 20])
-        plt.subplot(514)
+        ax.set_ylim([-15, 20])
+
+        ax = fig.add_subplot(514)
         self.plot_event(self.evts[self.goodEvts, :]
                         [np.array(clusters) == 3, :])
-        plt.ylim([-15, 20])
-        plt.subplot(515)
+        ax.set_ylim([-15, 20])
+
+        ax = fig.add_subplot(515)
         self.plot_event(self.evts[self.goodEvts, :]
                         [np.array(clusters) == 4, :])
-        plt.ylim([-15, 20])
+        ax.set_ylim([-15, 20])

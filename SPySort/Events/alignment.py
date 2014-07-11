@@ -1,7 +1,7 @@
 import copy
 import numpy as np
-from functions import convolution, cut_sgl_evt
-from Events import events
+from SPySort.functions import convolution, cut_sgl_evt
+from SPySort.Events import events
 
 
 class align_events(events.build_events):
