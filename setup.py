@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 from SPySort.version import version
 
-long_description = open("README.txt").read()
+long_description = open("README.md").read()
 
 install_requires = ['numpy>=1.3.0', 'pandas>=0.12.0', 'scipy>=0.9.0',
                     'matplotlib>=1.1.0', 'sqlalchemy>=0.7',
