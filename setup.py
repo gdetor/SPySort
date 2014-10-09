@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from setuptools import setup, find_packages
-from SPySort.version import version
+from setuptools import setup
+
+from spysort.version import version
 
 long_description = open("README.md").read()
 
@@ -8,9 +9,10 @@ install_requires = ['numpy>=1.3.0', 'pandas>=0.12.0', 'scipy>=0.9.0',
                     'matplotlib>=1.1.0', 'sqlalchemy>=0.7',
                     'scikit-learn>=0.11', ]
 
-setup(name="SPySort",
+setup(name="spysort",
       version=version,
-      packages=find_packages(),
+      packages=['spysort', 'spysort.ReadData',
+                'spysort.Events', 'examples', 'doc'],
       include_package_data=True,
       install_requires=install_requires,
       requires=[],

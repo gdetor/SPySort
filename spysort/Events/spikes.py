@@ -2,7 +2,7 @@ import copy
 import numpy as np
 import matplotlib.pylab as plt
 # from functions import convolution, mad, curr_pos, cp
-from SPySort.functions import mad, convolution, curr_pos, cp
+from spysort.functions import mad, convolution, curr_pos, cp
 
 
 class spike_detection():

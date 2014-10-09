@@ -2,7 +2,7 @@ import copy
 import collections
 import numpy as np
 import matplotlib.pylab as plt
-from SPySort.functions import mad, quantiles, curr_pos
+from spysort.functions import mad, quantiles, curr_pos
 # from functions import mad, quantiles, curr_pos
 
 Data_timeseries = collections.namedtuple('Data_timeseries', 'Data Timestamps')

@@ -1,8 +1,8 @@
 import copy
 import numpy as np
 import matplotlib.pylab as plt
-from SPySort.Events import spikes
-from SPySort.functions import mad, cut_sgl_evt
+from spysort.Events import spikes
+from spysort.functions import mad, cut_sgl_evt
 
 
 class build_events(spikes.spike_detection):

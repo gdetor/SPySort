@@ -1,4 +1,4 @@
-from SPySort.Events import events
+from spysort.Events import events
 
 import numpy as np
 import pandas as pd
@@ -9,7 +9,7 @@ from sklearn.cluster import KMeans
 from scipy.cluster.vq import kmeans
 from scipy.spatial.distance import pdist
 from pandas.tools.plotting import scatter_matrix
-from SPySort.functions import mad, good_evts_fct
+from spysort.functions import mad, good_evts_fct
 from scipy.cluster.hierarchy import linkage, fcluster, dendrogram
 
 
