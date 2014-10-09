@@ -11,7 +11,7 @@ implemented is given in [1].
 The modules of SPySort are:
 
 
-+ data.py : This module offers a class of functions for reading,
++ import_data.py : This module offers a class of functions for reading,
 normalizing, subsetting data, selecting specific recording channels, a summary
 functions that prints to the stdout all the important statistical numbers
 related to the raw data and an interactive plot function. 
