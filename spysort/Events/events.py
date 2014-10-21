@@ -53,6 +53,10 @@ class build_events(spikes.spike_detection):
 
             pos : int (list)
                 The new list of event positions defined by the user
+
+            **Returns**
+            A matrix with as many rows as events and whose rows are the cuts
+            on the different recording sites glued one after the other.
         """
         if otherPos is False:
             res = np.zeros((len(self.positions),
@@ -85,6 +89,12 @@ class build_events(spikes.spike_detection):
 
             size : int
                 The maximal number of noise events one wants to cut
+
+            **Returns**
+
+            A matrix with as many rows as noise events and whose rows are
+            the cuts on the different recording sites glued one after the
+            other.
         """
         if otherPos is False:
             x = self.data
@@ -128,17 +138,22 @@ class build_events(spikes.spike_detection):
     def sieve(self, func, x, *args):
         """ It sieves the events x in order to get the clean ones.
 
-        **Parameters**
+            **Parameters**
 
-        func : function
-            It's a user defined functions, that defines the cleaning method
-            of the events
+            func : function
+                It's a user defined function, that defines the cleaning method
+                of the events
 
-        x : double
-            The input vector that is sieved
+            x : double
+                The input vector that is sieved
 
-        *args : arguments (double)
+            *args : arguments (double)
             It's actually the threshold of the sieving.
+
+            **Returns**
+
+            A vector containing the cleaning events (it depends on the
+            underlying function each time).
         """
         tmp = func(x, *args)
         return tmp

@@ -13,6 +13,10 @@ def mad(x):
 
         x : double
             Data array
+
+        **Returns**
+
+        The median absolute deviation of input signal x.
     """
     return 1.4826 * np.median(np.abs(x - np.median(x)))
 
@@ -28,6 +32,10 @@ def quantiles(x, prob=[0, 0.25, 0.5, 0.75, 1]):
 
         prob : double
             List of quantiles to compute
+
+        **Returns**
+
+        A vector containing all the computed quantilies for the input signal x.
     """
     return st.mstats.mquantiles(x, prob=prob)
 
@@ -42,6 +50,10 @@ def convolution(x, window):
 
         window : double
             Filter window
+
+        **Returns**
+
+        The convolution of the input signal with a predefined window (win).
     """
     return signal.fftconvolve(x, window, 'same')
 
@@ -62,6 +74,10 @@ def f(x, median, mad, thr):
 
         thr : double
             Filtering threshold
+
+        **Returns**
+        A numpy array containing the data for which the |X-median(X)|/mad(X) <
+        thr.
     """
     return np.ndarray.all(np.abs((x - median)/mad) < thr)
 
@@ -76,6 +92,9 @@ def good_evts_fct(x, thr=3):
 
         thr : double
             Threshold of filtering
+
+        **Returns**
+        A vector containing all the detected good events.
     """
     samp_median = np.apply_along_axis(np.median, 0, x)
     samp_mad = np.apply_along_axis(mad, 0, x)
@@ -101,13 +120,19 @@ def cut_sgl_evt(x, position, before, after):
             Input data
 
         position : int
-            The spike event time
+            The index (location) of the (peak of) the event.
 
         before : int
-            The number of sampling point to keep before the peak
+            How many points should be within the cut before the reference
+            index / time given by position.
 
         after : int
-            The number of sampling point to keep after the peak
+            How many points should be within the cut after the reference
+            index / time given by position.
+
+        **Returns**
+        A vector with the cuts on the different recording sites glued one after
+        the other.
     """
     ns = x.shape[0]             # Number of recording sites
     dl = x.shape[1]             # Number of sampling points

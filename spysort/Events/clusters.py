@@ -72,6 +72,10 @@ class pca_clustering(events.build_events):
 
         n_pca : int
             Number of principal components to be taken into account
+
+        **Returns**
+
+        The variance of the principal component analysis.
         """
         noiseVar = sum(np.diag(np.cov(self.noise.T)))
         evtsVar = sum(self.S)
@@ -116,6 +120,9 @@ class pca_clustering(events.build_events):
 
         n_pca : int (tuple)
             Chooses which PCs are used
+
+        **Returns**
+        The indices for each neuron cluster.
         """
         km = KMeans(n_clusters=n_clusters, init=init, n_init=n_init,
                     max_iter=max_iter)
@@ -156,6 +163,9 @@ class pca_clustering(events.build_events):
 
         n_pca : int (tuple)
             Controls which PCs are used
+
+        **Returns**
+        The indices for each cluster.
         """
         gmm = GMM(n_components=n_comp, covariance_type=cov_type, n_iter=n_iter,
                   n_init=n_init, init_params=init_params)

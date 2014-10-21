@@ -34,6 +34,9 @@ class spike_detection():
 
             window : double (array)
                 The actual filter (boxcar, butter, wiener, etc)
+
+            **Returns**
+            A vector containing the filtered data.
         """
         filtered_data = np.apply_along_axis(convolution, 1, self.data,
                                             window)
@@ -52,16 +55,21 @@ class spike_detection():
                 Input filtered data
 
             minimalDist : int
-                A number that defines how many sampling points will be kept.
+                The minimal distance between two successive peaks.
                 (only putative maxima that are farther apart than minimalDist
                  sampling points are kept)
 
             notZero : double
-                Definition of zero
+                The smallest value above which the absolute value of the
+                derivative is considered not null.
 
             kind : string
                 aggregate : performs the detection on the sum of the input data
                 othr : performs the detection on each channel separately
+
+            **Returns**
+            An array of (peak) indices is returned.
+
         """
         win = np.array([1, 0, -1])/2.
         x = np.asarray(x)
