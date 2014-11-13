@@ -99,8 +99,8 @@ class spike_detection():
         else:
             print 'You have to choose either the aggregate or the full mode'
 
-    def plot_filtered_data(self, x, y, thrs, figsize=(9, 8), save=False,
-                           figname='candidate_peaks', figtype='png'):
+    def plotFilteredData(self, x, y, thrs, figsize=(9, 8), save=False,
+                         figname='candidate_peaks', figtype='png'):
         """ Plots the raw data vs the filtered ones according to the rawData
             plot method.
 
@@ -187,8 +187,8 @@ class spike_detection():
             else:
                 plt.savefig(figname+'png')
 
-    def plot_peaks(self, x, y, figsize=(9, 8), save=False, figname='peaks',
-                   figtype='png'):
+    def plotPeaks(self, x, y, figsize=(9, 8), save=False, figname='peaks',
+                  figtype='png'):
         """ Plots the filtered data (in black) and the detected peaks
             (in red).
 

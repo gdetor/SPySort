@@ -2,6 +2,7 @@ import copy
 import collections
 import numpy as np
 import matplotlib.pylab as plt
+from scipy.stats.mstats import mquantiles
 from spysort.functions import mad, quantiles, curr_pos
 # from functions import mad, quantiles, curr_pos
 
@@ -89,7 +90,7 @@ class read_data(object):
         else:
             print 'The resulting array contains not continuous data'
 
-    def select_channels(self, channels, begin=0, end=1):
+    def selectChannels(self, channels, begin=0, end=1):
         """ Selects a subset of channels and checks all the necessary
             constraints.
 
@@ -133,8 +134,46 @@ class read_data(object):
         print 'Quantiles: '
         print np.apply_along_axis(quantiles, 1, self.data)
 
-    def plot_data(self, x, figsize=(9, 8), save=False, figname='WholeRawData',
-                  figtype='png'):
+    def fiveNumbers(self):
+        """ Returns the five numbers, the minimum, the first quartile, the
+            median, the third quartile and the maximum """
+        np.set_printoptions(precision=3)
+        return [mquantiles(i, prob=[0, 0.25, 0.5, 0.75, 1]) for i in self.data]
+
+    def checkStdDiv(self):
+        """ Checks if the raw data have been divided by any std """
+        return [np.std(i) for i in self.data]
+
+    def discretStepAmpl(self):
+        """ Returns the discretization step amplitute of raw data """
+        return [np.min(np.diff(np.sort(np.unique(i)))) for i in self.data]
+
+    def checkMad(self):
+        """ Checks if the data have been properly renormalized and MAD works
+            fine """
+        from scipy.stats import norm
+        probs = np.arange(0.01, 0.99, 0.001)
+        dataQ = map(lambda x:
+                    mquantiles(x, prob=probs), self.data)
+        dataQsd = map(lambda x:
+                      mquantiles(x/np.std(x), prob=probs), self.data)
+        qq = norm.ppf(probs)
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        ax.plot(np.linspace(-3, 3, 100), np.linspace(-3, 3, 100), c='grey')
+        colors = ['black', 'orange', 'blue', 'red']
+        for i, y in enumerate(dataQ):
+            ax.plot(qq, y, color=colors[i])
+
+        for i, y in enumerate(dataQsd):
+            ax.plot(qq, y, color=colors[i], linestyle="dashed")
+
+        ax.set_xlabel('Normal quantiles')
+        ax.set_ylabel('Empirical quantiles')
+
+    def plotData(self, x, figsize=(9, 8), save=False, figname='WholeRawData',
+                 figtype='png'):
         """ Plots the data. Can interact with the user by supporting scrolling
             and selective printing of data segments.
 

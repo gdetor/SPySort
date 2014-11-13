@@ -14,15 +14,15 @@ from time import clock
 
 if __name__ == '__main__':
     # Donwload the data ############################
-    data_names = ['Locust_' + str(i) + '.dat.gz'
-                  for i in range(1, 5)]
-    data_src = ['http://xtof.disque.math.cnrs.fr/data/'
-                + n for n in data_names]
-    [urlretrieve(data_src[i], data_names[i]) for i in range(4)]
-    # End of Donwload the data ####################
+    # data_names = ['Locust_' + str(i) + '.dat.gz'
+    #               for i in range(1, 5)]
+    # data_src = ['http://xtof.disque.math.cnrs.fr/data/'
+    #             + n for n in data_names]
+    # [urlretrieve(data_src[i], data_names[i]) for i in range(4)]
+    # # End of Donwload the data ####################
 
-    # Decompress the data #########################
-    [os.system('gunzip ' + n) for n in data_names]
+    # # Decompress the data #########################
+    # [os.system('gunzip ' + n) for n in data_names]
     # End of decompress the data ##################
 
     # Load the data ###############################
