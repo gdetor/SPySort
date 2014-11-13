@@ -38,7 +38,7 @@ class build_events(spikes.spike_detection):
         # Data filtering
         self.positions = positions
 
-    def mk_events(self, otherPos=False, x=[], pos=[]):
+    def mkEvents(self, otherPos=False, x=[], pos=[], before=14, after=30):
         """ Constructs a list of all the events from the input data.
 
             **Parameters**
@@ -54,6 +54,13 @@ class build_events(spikes.spike_detection):
             pos : int (list)
                 The new list of event positions defined by the user
 
+            before : int
+                The number of points before of an peak
+
+            after : int
+                The number of points after a peak (both parameters, before and
+                after, define the size of an event segment)
+
             **Returns**
             A matrix with as many rows as events and whose rows are the cuts
             on the different recording sites glued one after the other.
@@ -66,12 +73,12 @@ class build_events(spikes.spike_detection):
             return copy.deepcopy(res)
         else:
             res = np.zeros((len(pos),
-                           (self.before+self.after+1) * x.shape[0]))
+                           (before+after+1) * x.shape[0]))
         for i, p in enumerate(pos):
-            res[i, :] = cut_sgl_evt(x, p, self.before, self.after)
+            res[i, :] = cut_sgl_evt(x, p, before, after)
         return copy.deepcopy(res)
 
-    def mk_noise(self, otherPos=False, x=[], safety_factor=2, size=2000):
+    def mkNoise(self, otherPos=False, x=[], safety_factor=2, size=2000):
         """ Computes the noise events
 
             **Parameters**
@@ -158,8 +165,8 @@ class build_events(spikes.spike_detection):
         tmp = func(x, *args)
         return tmp
 
-    def plot_mad_median(self, events, figsize=(5, 5), save=False,
-                        figname='mam-median-evts', figtype='png'):
+    def plotMadMedian(self, events, figsize=(5, 5), save=False,
+                      figname='mam-median-evts', figtype='png'):
         """ Plots the median and the medan absolute value of the input
             array events
 
@@ -198,8 +205,8 @@ class build_events(spikes.spike_detection):
             else:
                 plt.savefig(figname+'png')
 
-    def plot_events(self, x, r=(0, 200), figsize=(5, 5), save=False,
-                    figname='mam-median-evts', figtype='png'):
+    def plotEvents(self, x, r=(0, 200), figsize=(5, 5), save=False,
+                   figname='mam-median-evts', figtype='png'):
         """ Plots all the computed events
 
             **Parameters**

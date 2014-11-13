@@ -53,7 +53,7 @@ class pca_clustering(events.build_events):
         # Perform a singular value decomposition
         self.U, self.S, self.V = svd(varcovmat)
 
-    def plot_mean_pca(self):
+    def plotMeanPca(self):
         """ Plots the mean of the data plus-minus the principal components """
         evt_idx = range(self.evts.shape[1])
         evts_good_mean = np.mean(self.evts[self.goodEvts, :], 0)
@@ -65,7 +65,7 @@ class pca_clustering(events.build_events):
             plt.title('PC' + str(i) + ': ' + str(round(self.S[i]/sum(self.S) *
                       100)) + '%')
 
-    def pca_variance(self, n_pca):
+    def pcaVariance(self, n_pca):
         """ Returns the variance of the principal components.
 
         **Parameters**
@@ -82,7 +82,7 @@ class pca_clustering(events.build_events):
         return [(i, sum(self.S[:i]) + noiseVar - evtsVar) for i in
                 range(n_pca)]
 
-    def plot_pca_projections(self, pca_components=(0, 4)):
+    def plotPcaProjections(self, pca_components=(0, 4)):
         """ Plots the principal components projected on the data.
 
         **Parameters**
@@ -238,9 +238,9 @@ class pca_clustering(events.build_events):
         F = fcluster(D, 2, criterion='maxclust')
         return F
 
-    def plot_event(self, x, n_plot=None, events_color='black', events_lw=0.1,
-                   show_median=True, median_color='red', median_lw=0.5,
-                   show_mad=True, mad_color='blue', mad_lw=0.5):
+    def plotEvent(self, x, n_plot=None, events_color='black', events_lw=0.1,
+                  show_median=True, median_color='red', median_lw=0.5,
+                  show_mad=True, mad_color='blue', mad_lw=0.5):
         """ Plots an event after clustering.
 
         **Parameters**
@@ -285,7 +285,7 @@ class pca_clustering(events.build_events):
         plt.axvspan(45, 89, fc='grey', alpha=.5, edgecolor='none')
         plt.axvspan(135, 179, fc='grey', alpha=.5, edgecolor='none')
 
-    def plot_clusters(self, clusters, Size=(11, 8)):
+    def plotClusters(self, clusters, Size=(11, 8)):
         """ Plots events belong to five different clusters.
 
         **Parameters**
