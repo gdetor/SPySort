@@ -1,5 +1,4 @@
 """
 """
 
-import version
-__version__ = version.version
+__version__ = "1.0.0"
